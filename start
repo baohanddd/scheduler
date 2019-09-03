@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run --name=node -d --rm -p=1337:1337 -v=$(pwd):/data/timer -w=/data/timer node:10-alpine node index.js
