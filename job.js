@@ -40,7 +40,7 @@ const JobFactory = (redis) => {
       return null;
     } else {
       interval = delay * 1000;
-      interval = 2000;
+      // interval = 2000;
     }
 
     if("id" in json === false) {
