@@ -10,7 +10,8 @@ const schema = Joi.object().keys({
   at: Joi.date().timestamp('unix').required(),
   id: Joi.any(),
   headers: Joi.any(),
-  params: Joi.any()
+  params: Joi.any(),
+  type: Joi.any()
 });
 
 const getPrimaryKey = () => {
@@ -54,6 +55,10 @@ const JobFactory = (redis) => {
     if("params" in json === false) {
       json.params = {};
     }
+
+    if("type" in json === false) {
+      json.type = 'form';
+    }
   
     return {
       id: json.id,
@@ -62,14 +67,26 @@ const JobFactory = (redis) => {
       remove: () => io.remove(json.id),
       attach: (timers) => {
         let timer = setTimeout(() => {
-          request({
+          let opts = {
             method: json.method,
             uri: json.url,
             headers: json.headers,
             form: json.params
-          }, function(err, res, body) {
+          };
+
+          if(json.type == 'form') {
+            opts.form = json.params
+          }
+
+          if(json.type == 'json') {
+            opts.json = json.params
+          }
+
+          request(opts, function(err, res, body) {
             if(err) {
               l.error(`An error occurs when call ${json.url} with params ${json.params}`)
+              l.error(err);
+              l.error(body);
               return ;
             }
             l.info(`${json.url} called ... success`, {
