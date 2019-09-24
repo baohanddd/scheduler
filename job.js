@@ -28,7 +28,7 @@ const JobFactory = (redis) => {
 
   const create = (json) => {
     let ret = schema.validate(json);
-    if(ret.error !== null) {
+    if(ret.error !== undefined) {
       l.error(ret.error);
       l.error('INVALID PAYLOAD', json);
       return null;
