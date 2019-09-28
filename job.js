@@ -3,6 +3,7 @@ const Joi = require('@hapi/joi');
 const l = require('./logger');
 const Io = require('./io');
 const request = require('request');
+const bt = require('big-time');
 
 const schema = Joi.object().keys({
   url: Joi.string().required(),
@@ -66,7 +67,7 @@ const JobFactory = (redis) => {
       json: () => json,
       remove: () => io.remove(json.id),
       attach: (timers) => {
-        let timer = setTimeout(() => {
+        let timer = bt.setTimeout(() => {
           let opts = {
             method: json.method,
             uri: json.url,
@@ -122,7 +123,7 @@ const JobFactory = (redis) => {
   const remove = (id, timers) => {
     if(id in timers) {
       let timer = timers[id]
-      clearTimeout(timer);
+      bt.clearTimeout(timer);
       delete timers[id]
     }
     io.remove(id);
