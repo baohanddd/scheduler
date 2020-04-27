@@ -35,14 +35,14 @@ const JobFactory = (redis) => {
       return null;
     }
 
-    let delay = json.at - now();
+    let present = now();
+    let delay = json.at - present;
     let interval = 0;
     if(delay < 0) {
-      l.error(`the delay ${delay} has to greater than zero`);
+      l.error(`the delay ${delay} has to greater than zero with now=${present}`, json);
       return null;
     } else {
       interval = delay * 1000;
-      // interval = 2000;
     }
 
     if("id" in json === false) {
