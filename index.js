@@ -4,7 +4,11 @@ const bodyParser = require('koa-bodyparser');
 const indexRoutes = require('./routes/index');
 const jobRoutes = require('./routes/job');
 
-const client = redis.createClient({ host: 'redis' });
+const client = redis.createClient({ 
+  host: 'r-wz91b69368ae4134.redis.rds.aliyuncs.com', 
+  port: 6379, 
+  password: 'yuer-cache:Wearefl0805'
+});
 
 const app = new Koa();
 const PORT = process.env.PORT || 1337;
