@@ -2,3 +2,5 @@ combined.log
 error.log
 package-lock.json
 node_modules/
+.idea/
+.vscode/
