@@ -23,9 +23,9 @@ let now = () => {
   return parseInt((new Date()).getTime() / 1000);
 };
 
-const JobFactory = (redis) => {
+const JobFactory = () => {
 
-  const io = Io(redis);
+  const io = Io();
 
   const create = (json) => {
     let ret = schema.validate(json);

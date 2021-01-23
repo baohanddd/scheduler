@@ -1,10 +1,11 @@
 const hash = "jobs";
+const db = require('./db')(hash)
 
-const Io = (redis) => {
+const Io = () => {
 
   const all = () => {
     return new Promise((resolve, reject) => {
-      redis.hgetall(hash, (err, map) => { 
+      db.all((err, map) => {
         if(err) return reject(err);
         resolve(map) 
       });
@@ -12,32 +13,31 @@ const Io = (redis) => {
   };
 
   const save = (json) => {
-    return new Promise((resolve) => {
-      redis.hset(hash, json.id, JSON.stringify(json), (ret) => {
-        resolve(ret);
+    return new Promise((resolve, reject) => {
+      db.save(json.id, JSON.stringify(json), err => {
+        if (err) return reject(err);
+        resolve();
       });
     })
   };
 
   const remove = (id) => {
-    return new Promise(resolve => {
-      redis.hdel(hash, id, () => {
-        resolve();
-      })
+    return new Promise((resolve, reject) => {
+      db.del(id, err => {
+        if (err) return reject(err)
+        resolve()
+      });
     })
   };
 
   const get = (id) => {
-    return new Promise(resolve => {
-      redis.hget(hash, id, (job) => {
-        resolve(JSON.parse(job));
+    return new Promise((resolve, reject) => {
+      db.get(id, (err, job) => {
+        if (err) return reject(err)
+        resolve(JSON.parse(job))
       })
     })
   }
-
-  return {
-    all, save, remove, get
-  }
-
+  return {all, save, remove, get}
 };
 module.exports = Io;
