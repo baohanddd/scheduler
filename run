@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker run -it --name=timer --rm -p=1337:1337 --add-host=stage.circle30.com:172.17.0.1 --add-host=redis:172.17.0.1 -v=$(pwd):/data/timer -w=/data/timer -h= node:10-alpine $*
