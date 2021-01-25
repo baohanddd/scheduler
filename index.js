@@ -36,7 +36,7 @@ app.use(indexRoutes.routes());
 app.use(jobRoutes.routes());
 
 const server = app.listen(PORT, () => {
-  let version = "1.0.3";
+  let version = "2.0.3";
   console.log(`Server ${version} listening on port: ${PORT}`);
 });
 module.exports = server;
